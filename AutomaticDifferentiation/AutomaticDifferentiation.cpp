@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 
 class DualNumber {
     double _x;
@@ -65,13 +66,19 @@ public:
 	// Power function
 	DualNumber pow(double exponent) const {
 		double x = std::pow(_x, exponent);
-		double dx = exponent * std::pow(_dx, exponent-1) * _dx;
+		double dx = exponent * std::pow(_x, exponent-1) * _dx;
 		return DualNumber(x, dx);
 		
 	}
 
 	// Friend function for right-hand side division
 	friend DualNumber operator/(double lhs, const DualNumber& rhs);
+
+	// Friend function for right-hand side power function
+	friend DualNumber pow(double lhs, const DualNumber& rhs);
+
+	// Friend function for << operator
+	friend std::ostream& operator<<(std::ostream& os, const DualNumber& dn);
 };
 
 // Right-hand side division operator
@@ -81,7 +88,22 @@ DualNumber operator/(double lhs, const DualNumber& rhs) {
 	return DualNumber(x, dx);
 }
 
+// Right-hand side power function
+DualNumber pow(double lhs, const DualNumber& rhs) {
+	double x = std::pow(lhs, rhs._x);
+	double dx = x * std::log(lhs) * rhs._dx;
+	return DualNumber(x, dx);
+}
+
+std::ostream& operator<<(std::ostream& os, const DualNumber& dn) {
+	os << "x = " << dn._x << ", dx = " << dn._dx << std::endl;
+	return os;
+}
+
 int main()
 {
-    
+	DualNumber dn1(2.0, 1.0);
+	DualNumber dn2 = dn1.pow(3);
+	std::cout << "dn1.pow(3): " << dn2 << std::endl;
+	return 0;
 }
