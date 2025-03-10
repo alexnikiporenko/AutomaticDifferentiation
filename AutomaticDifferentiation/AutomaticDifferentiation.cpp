@@ -121,6 +121,11 @@ public:
 
     // Friend function for right-hand side power function
     friend DualNumber power(double lhs, const DualNumber& rhs);
+
+    // Friend functions for non-algebraic operators
+    friend DualNumber sin(const DualNumber& dn);
+
+    friend DualNumber cos(const DualNumber& dn);
 };
 
 // Right-hand side algebraic operators
@@ -147,6 +152,22 @@ DualNumber power(double lhs, const DualNumber& rhs) {
     double x = std::pow(lhs, rhs._x);
     double dx = x * std::log(lhs) * rhs._dx;
     return DualNumber(x, dx);
+}
+
+DualNumber sin(const DualNumber& dn) {
+    double x = std::sin(dn._x);
+    double dx = std::cos(dn._x) * dn._dx;
+    return DualNumber(x, dx);
+}
+
+DualNumber cos(const DualNumber& dn) {
+    double x = std::cos(dn._x);
+    double dx = -std::sin(dn._x) * dn._dx;
+    return DualNumber(x, dx);
+}
+
+DualNumber tan(const DualNumber& dn) {
+    return sin(dn) / cos(dn);
 }
 
 namespace py = pybind11;
@@ -184,5 +205,8 @@ PYBIND11_MODULE(automatic_differentiation, m) {
         .def("__pow__", (DualNumber(DualNumber::*)(const DualNumber&) const) & DualNumber::power)
         .def("__pow__", (DualNumber(DualNumber::*)(double) const) & DualNumber::power)
         .def("__rpow__", [](const DualNumber& rhs, double lhs) { return power(lhs, rhs); })
-        .def("__repr__", &DualNumber::repr);
+        .def("__repr__", &DualNumber::repr)
+        .def("sin", [](const DualNumber& dn) { return sin(dn); })
+        .def("cos", [](const DualNumber& dn) { return cos(dn); })
+        .def("tan", [](const DualNumber& dn) { return tan(dn); });
 }
