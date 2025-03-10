@@ -46,6 +46,10 @@ To use it:
 2. Define your function
 3. Run the cells to see the animation
 
+## HTML Version for Easy Viewing
+
+For convenience, the notebook has also been converted to an HTML file, allowing you to view the visualizations without needing Jupyter. Simply open automatic_differentiation.html in your browser.
+
 ## Mathematical Background
 
 Dual numbers extend real numbers with an infinitesimal ε where ε² = 0. Each dual number has the form a + bε, where:
