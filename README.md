@@ -37,4 +37,4 @@ While this is a learning project, automatic differentiation has important real-w
 
 ## HTML Version for Easy Viewing
 
-For convenience, the notebook has also been converted to an HTML file, allowing you to view the visualizations without needing Jupyter. Simply open automatic_differentiation.html in your browser.
+For convenience, the notebook has also been converted to an HTML file, allowing you to view the visualizations without needing Jupyter. Simply open [automatic_differentiation.html](https://alexnikiporenko.github.io/AutomaticDifferentiation/automatic_differentiation.html) in your browser.
